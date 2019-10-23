@@ -10,10 +10,9 @@ import (
 
 	"github.com/ory/fosite-example/authorizationserver"
 	"github.com/ory/fosite-example/oauth2client"
-	goauth "golang.org/x/oauth2"
 	"github.com/privacybydesign/irmago/server"
 	"github.com/privacybydesign/irmago/server/irmaserver"
-
+	goauth "golang.org/x/oauth2"
 )
 
 // A valid oauth2 client (check the store) that additionally requests an OpenID Connect id token
@@ -44,7 +43,7 @@ func main() {
 
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.HandleFunc("/irma-login", irma.CreateFullnameRequest)
+	http.HandleFunc("/irma-login", irma.CreateSessionRequest)
 	http.HandleFunc("/get-irma-session", irma.GetIrmaSessionPtr)
 
 	// ### oauth2 server ###
@@ -63,4 +62,3 @@ func main() {
 	_ = exec.Command("open", "http://localhost:"+port).Run()
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
-

@@ -74,6 +74,7 @@ func authEndpoint(rw http.ResponseWriter, req *http.Request) {
 	// You have now access to authorizeRequest, Code ResponseTypes, Scopes ...
 	scopes := ar.GetRequestedScopes()
 	if len(scopes) < 1 {
+		log.Println("Error: No scopes supplied")
 		oauth2.WriteAuthorizeError(rw, ar, errors.New("No scopes supplied"))
 		return
 	}
@@ -99,7 +100,6 @@ func authEndpoint(rw http.ResponseWriter, req *http.Request) {
 	ar.GrantScope("openid")
 	response, err := oauth2.NewAuthorizeResponse(ctx, ar, mySessionData)
 
-
 	// Catch any errors, e.g.:
 	// * unknown client
 	// * invalid redirect
@@ -113,4 +113,3 @@ func authEndpoint(rw http.ResponseWriter, req *http.Request) {
 	// Last but not least, send the response!
 	oauth2.WriteAuthorizeResponse(rw, ar, response)
 }
-

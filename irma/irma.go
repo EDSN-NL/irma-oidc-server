@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/privacybydesign/irmago"
-	"net/http"
 	"github.com/go-session/session"
+	"github.com/privacybydesign/irmago"
 	"github.com/privacybydesign/irmago/server"
 	"github.com/privacybydesign/irmago/server/irmaserver"
+	"net/http"
+	"net/url"
 	"os"
+	"strings"
 )
 
 func GetIrmaSessionPtr(w http.ResponseWriter, r *http.Request) {
@@ -30,20 +32,24 @@ func GetIrmaSessionPtr(w http.ResponseWriter, r *http.Request) {
 	w.Write(sessionPtr.([]byte))
 }
 
-
-func CreateFullnameRequest(w http.ResponseWriter, r *http.Request) {
+func CreateSessionRequest(w http.ResponseWriter, r *http.Request) {
 	store, err := session.Start(nil, w, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	request := `{
-      "type": "disclosing",
-      "content": [{ "label": "Email", "attributes": [ "pbdf.pbdf.email.email" ]}]
-  }`
+	oauthSessionData, ok := store.Get("OAuthSessionData")
+	if !ok {
+		http.Error(w, "no OAuthSessionData present", http.StatusBadRequest)
+		return
+	}
 
-	sessionPointer, _, err := irmaserver.StartSession(request, func (r *server.SessionResult) {
+	var form url.Values
+	form = oauthSessionData.(url.Values)
+	request := getDisclosureRequestFromScopeParam(form.Get("scope"))
+
+	sessionPointer, _, err := irmaserver.StartSession(request, func(r *server.SessionResult) {
 		fmt.Println("IRMA Session done, result: ", server.ToJson(r))
 		store.Set("IrmaResult", server.ToJson(r))
 		store.Save()
@@ -117,3 +123,22 @@ func ExtractSubjectIdentifier(scopes []string) (irma.AttributeTypeIdentifier, er
 	return irma.NewAttributeTypeIdentifier(scopes[1]), nil
 }
 
+func getDisclosureRequestFromScopeParam(scope string) *irma.DisclosureRequest {
+	scopes := strings.Split(scope, " ")
+
+	var attributeRequests []irma.AttributeRequest
+	for _, v := range scopes {
+		if v == "openid" {
+			continue
+		}
+		attributeRequests = append(attributeRequests, irma.NewAttributeRequest(v))
+	}
+
+	request := irma.NewDisclosureRequest()
+	request.Disclose = irma.AttributeConDisCon{
+		irma.AttributeDisCon{
+			attributeRequests,
+		},
+	}
+	return request
+}

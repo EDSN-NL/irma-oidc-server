@@ -48,12 +48,11 @@ var config = new(compose.Config)
 var strat = compose.CommonStrategy{
 	// alternatively you could use:
 	//  OAuth2Strategy: compose.NewOAuth2JWTStrategy(mustRSAKey())
-  CoreStrategy: compose.NewOAuth2HMACStrategy(config, []byte("some-super-cool-secret-that-nobody-knows")),
+	CoreStrategy: compose.NewOAuth2HMACStrategy(config, []byte("some-super-cool-secret-that-nobody-knows")),
 
 	// open id connect strategy
 	OpenIDConnectTokenStrategy: compose.NewOpenIDConnectStrategy(mustRSAKey()),
 }
-
 
 //var oauth2 = compose.ComposeAllEnabled(config, store, )
 var oauth2 = compose.Compose(
@@ -95,17 +94,16 @@ func newSession(subject string, disclosed map[string]interface{}) *openid.Defaul
 
 	return &openid.DefaultSession{
 		Claims: &jwt.IDTokenClaims{
-			Issuer:      "https://fosite.my-application.com",
-			Subject:     subject,
+			Issuer:  "https://fosite.my-application.com",
+			Subject: subject,
 			//Audience:    []string{"https://my-client.my-application.com"},
 			ExpiresAt:   time.Now().Add(time.Minute * 5),
 			IssuedAt:    time.Now(),
 			RequestedAt: time.Now(),
 			AuthTime:    time.Now(),
-			Extra: extra,
+			Extra:       extra,
 		},
-		Headers: &jwt.Headers{
-		},
+		Headers: &jwt.Headers{},
 	}
 }
 
