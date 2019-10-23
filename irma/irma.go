@@ -33,6 +33,9 @@ func GetIrmaSessionPtr(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateSessionRequest(w http.ResponseWriter, r *http.Request) {
+	// Don't ever cache this page to prevent irma session from being created
+	w.Header().Set("Cache-Control", "no-cache")
+
 	store, err := session.Start(nil, w, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

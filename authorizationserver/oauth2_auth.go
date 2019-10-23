@@ -52,6 +52,8 @@ func authEndpoint(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	store.Flush()
+
 	irmaParsedResult := server.SessionResult{}
 	err = json.Unmarshal([]byte(fmt.Sprintf("%v", irmaResult)), &irmaParsedResult)
 	if err != nil {
@@ -59,9 +61,6 @@ func authEndpoint(rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	store.Delete("IrmaResult")
-	store.Save()
 
 	// Let's create an AuthorizeRequest object!
 	ar, err := oauth2.NewAuthorizeRequest(ctx, req)

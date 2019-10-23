@@ -6,7 +6,9 @@
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
     <script src="static/js/irma.js"></script>
     <script type="text/javascript">
-      fetch('/get-irma-session')
+      fetch('/get-irma-session', {
+        credentials: 'same-origin',
+      })
         .then(response => response.json())
         .then(u => irma.handleSession(u))
         .then(() => window.location.href = '/oauth2/auth');
