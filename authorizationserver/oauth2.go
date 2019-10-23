@@ -3,6 +3,7 @@ package authorizationserver
 import (
 	"crypto/rand"
 	"crypto/rsa"
+	"github.com/ory/fosite"
 	"net/http"
 	"time"
 
@@ -16,14 +17,29 @@ func RegisterHandlers() {
 	// Set up oauth2 endpoints. You could also use gorilla/mux or any other router.
 	http.HandleFunc("/oauth2/auth", authEndpoint)
 	http.HandleFunc("/oauth2/token", tokenEndpoint)
-
-	// revoke tokens
-	http.HandleFunc("/oauth2/revoke", revokeEndpoint)
-	http.HandleFunc("/oauth2/introspect", introspectionEndpoint)
 }
 
 // This is an exemplary storage instance. We will add a client and a user to it so we can use these later on.
-var store = storage.NewExampleStore()
+var store = &storage.MemoryStore{
+	IDSessions: make(map[string]fosite.Requester),
+	Clients: map[string]*fosite.DefaultClient{
+		"my-client2": {
+			ID:            "my-client2",
+			Secret:        []byte(`$2a$10$IxMdI6d.LIRZPpSfEwNoeu4rY3FhDREsxFJXikcgdRRAStxUlsuEO`), // = "foobar"
+			RedirectURIs:  []string{"http://localhost:3847/callback"},
+			ResponseTypes: []string{"id_token", "code"}, // token not needed?
+			GrantTypes:    []string{"authorization_code"},
+			Scopes:        []string{"openid", "pbdf.nijmegen.personalData.fullname", "pbdf.pbdf.email.email"},
+		},
+	},
+	AuthorizeCodes:         map[string]storage.StoreAuthorizeCode{},
+	Implicit:               map[string]fosite.Requester{},
+	AccessTokens:           map[string]fosite.Requester{},
+	RefreshTokens:          map[string]fosite.Requester{},
+	PKCES:                  map[string]fosite.Requester{},
+	AccessTokenRequestIDs:  map[string]string{},
+	RefreshTokenRequestIDs: map[string]string{},
+}
 
 var config = new(compose.Config)
 
@@ -32,12 +48,14 @@ var config = new(compose.Config)
 var strat = compose.CommonStrategy{
 	// alternatively you could use:
 	//  OAuth2Strategy: compose.NewOAuth2JWTStrategy(mustRSAKey())
-	CoreStrategy: compose.NewOAuth2HMACStrategy(config, []byte("some-super-cool-secret-that-nobody-knows")),
+  CoreStrategy: compose.NewOAuth2HMACStrategy(config, []byte("some-super-cool-secret-that-nobody-knows")),
 
 	// open id connect strategy
 	OpenIDConnectTokenStrategy: compose.NewOpenIDConnectStrategy(mustRSAKey()),
 }
 
+
+//var oauth2 = compose.ComposeAllEnabled(config, store, )
 var oauth2 = compose.Compose(
 	config,
 	store,
@@ -71,25 +89,28 @@ var oauth2 = compose.Compose(
 // Usually, you could do:
 //
 //  session = new(fosite.DefaultSession)
-func newSession(user string) *openid.DefaultSession {
+func newSession(subject string, disclosed map[string]interface{}) *openid.DefaultSession {
+	extra := make(map[string]interface{})
+	extra["disclosed"] = disclosed
+
 	return &openid.DefaultSession{
 		Claims: &jwt.IDTokenClaims{
 			Issuer:      "https://fosite.my-application.com",
-			Subject:     user,
-			Audience:    []string{"https://my-client.my-application.com"},
-			ExpiresAt:   time.Now().Add(time.Hour * 6),
+			Subject:     subject,
+			//Audience:    []string{"https://my-client.my-application.com"},
+			ExpiresAt:   time.Now().Add(time.Minute * 5),
 			IssuedAt:    time.Now(),
 			RequestedAt: time.Now(),
 			AuthTime:    time.Now(),
+			Extra: extra,
 		},
 		Headers: &jwt.Headers{
-			Extra: make(map[string]interface{}),
 		},
 	}
 }
 
 func mustRSAKey() *rsa.PrivateKey {
-	key, err := rsa.GenerateKey(rand.Reader, 1024)
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		panic(err)
 	}

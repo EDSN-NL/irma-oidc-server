@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>IRMA attribute verification example</title>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <script src="static/js/irma.js"></script>
+    <script type="text/javascript">
+      fetch('/get-irma-session')
+        .then(response => response.json())
+        .then(u => irma.handleSession(u))
+        .then(() => window.location.href = '/oauth2/auth');
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <h1>TEST</h1>
+  </body>
+</html>

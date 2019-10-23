@@ -1,0 +1,59 @@
+body, button, input {
+  font-family: "Arial";
+  line-height: 1.3em;
+  font-size: 16px;
+}
+
+input {
+  width: 20em;
+}
+
+button {
+  margin: 1em 0;
+  padding: 0.3em;
+}
+
+h2, h3 {
+  margin-top: 2em;
+}
+
+#container {
+  margin: 50px auto;
+  max-width: 600px;
+}
+
+.label {
+  display: inline-block;
+  width: 140px;
+  text-align: right;
+  margin-bottom: 0.3em;
+}
+
+#attrval {
+  font-weight: bold;
+  margin-left: 0.5em;
+}
+
+.status {
+  margin: 1em 0;
+  padding: 1em;
+  width: 100%;
+}
+
+.success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+
+.warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+
+.error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}

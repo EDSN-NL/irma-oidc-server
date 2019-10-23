@@ -12,7 +12,7 @@ func tokenEndpoint(rw http.ResponseWriter, req *http.Request) {
 	ctx := fosite.NewContext()
 
 	// Create an empty session object which will be passed to the request handlers
-	mySessionData := newSession("")
+	mySessionData := newSession("", make(map[string]interface{}))
 
 	// This will create an access request object and iterate through the registered TokenEndpointHandlers to validate the request.
 	accessRequest, err := oauth2.NewAccessRequest(ctx, req, mySessionData)
@@ -25,15 +25,6 @@ func tokenEndpoint(rw http.ResponseWriter, req *http.Request) {
 		log.Printf("Error occurred in NewAccessRequest: %+v", err)
 		oauth2.WriteAccessError(rw, accessRequest, err)
 		return
-	}
-
-	// If this is a client_credentials grant, grant all scopes the client is allowed to perform.
-	if accessRequest.GetGrantTypes().Exact("client_credentials") {
-		for _, scope := range accessRequest.GetRequestedScopes() {
-			if fosite.HierarchicScopeStrategy(accessRequest.GetClient().GetScopes(), scope) {
-				accessRequest.GrantScope(scope)
-			}
-		}
 	}
 
 	// Next we create a response for the access request. Again, we iterate through the TokenEndpointHandlers

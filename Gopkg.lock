@@ -8,10 +8,58 @@
   version = "v7"
 
 [[projects]]
+  name = "github.com/bwesterb/byteswriter"
+  packages = ["."]
+  revision = "fe2f57e9fb9cee2d2843caa9e7bc1baa081fb567"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/bwesterb/go-atum"
+  packages = ["."]
+  revision = "1ace26c6d4315cb157d5a66aba183ead7e54a52c"
+  version = "v1.0.1"
+
+[[projects]]
+  name = "github.com/bwesterb/go-pow"
+  packages = ["."]
+  revision = "c84a42458d2e58f61395e19d07cfc9630df15dc6"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/bwesterb/go-xmssmt"
+  packages = ["."]
+  revision = "26732eb53ce3bdcf1949a7c571dbe0de9c52f0c9"
+  version = "v1.0.4"
+
+[[projects]]
+  name = "github.com/cespare/xxhash"
+  packages = ["."]
+  revision = "de209a9ffae3256185a6bb135d1a0ada7b2b5f09"
+  version = "v2.1.0"
+
+[[projects]]
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
+
+[[projects]]
+  name = "github.com/edsrzf/mmap-go"
+  packages = ["."]
+  revision = "188cc3b666ba704534fa4f96e9e61f21f1e1ba7c"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/go-errors/errors"
+  packages = ["."]
+  revision = "a6af135bd4e28680facf08a3d206b454abc877a4"
+  version = "v1.0.1"
+
+[[projects]]
+  name = "github.com/go-session/session"
+  packages = ["."]
+  revision = "d6ac8895339bb279864eeedef065a4d486c66bd9"
+  version = "v3.1.3"
 
 [[projects]]
   branch = "master"
@@ -26,6 +74,66 @@
   revision = "1f550f6f2f69009f6ae57347c188e0a67cd4e500"
 
 [[projects]]
+  name = "github.com/hashicorp/errwrap"
+  packages = ["."]
+  revision = "8a6fb523712970c966eefc6b39ed2c5e74880354"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/hashicorp/go-cleanhttp"
+  packages = ["."]
+  revision = "eda1e5db218aad1db63ca4642c8906b26bcf2744"
+  version = "v0.5.1"
+
+[[projects]]
+  name = "github.com/hashicorp/go-hclog"
+  packages = ["."]
+  revision = "5ccdce08c75b6c7b37af61159f13f6a4f5e2e928"
+  version = "v0.9.2"
+
+[[projects]]
+  name = "github.com/hashicorp/go-multierror"
+  packages = ["."]
+  revision = "886a7fbe3eb1c874d46f623bfa70af45f425b3d1"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/hashicorp/go-retryablehttp"
+  packages = ["."]
+  revision = "a83ad44d6a5fc343d7c4babf601092b3c189f402"
+  version = "v0.6.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/jasonlvhit/gocron"
+  packages = ["."]
+  revision = "57f89394836a3cf351337b15507fd5a8d76b694e"
+
+[[projects]]
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
+  version = "v1.0.2"
+
+[[projects]]
+  name = "github.com/mattn/go-colorable"
+  packages = ["."]
+  revision = "98ec13f34aabf44cc914c65a1cfb7b9bc815aef1"
+  version = "v0.1.4"
+
+[[projects]]
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  revision = "88ba11cfdc67c7588b30042edf244b2875f892b6"
+  version = "v0.0.10"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mgutz/ansi"
+  packages = ["."]
+  revision = "9520e82c474b0a04dd04f8a40959027271bab992"
+
+[[projects]]
   branch = "master"
   name = "github.com/mohae/deepcopy"
   packages = ["."]
@@ -36,6 +144,12 @@
   name = "github.com/moul/http2curl"
   packages = ["."]
   revision = "9ac6cf4d929b2fa8fd2d2e6dec5bb0feb4f4911d"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/nightlyone/lockfile"
+  packages = ["."]
+  revision = "0ad87eef1443f64d3d8c50da647e2b1552851124"
 
 [[projects]]
   name = "github.com/ory/fosite"
@@ -81,10 +195,73 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/privacybydesign/gabi"
+  packages = [
+    ".",
+    "big",
+    "safeprime"
+  ]
+  revision = "ce779395f4c98898f21f8c49f71f4b3353995127"
+
+[[projects]]
+  name = "github.com/privacybydesign/irmago"
+  packages = [
+    ".",
+    "internal/disable_sigpipe",
+    "internal/fs",
+    "internal/servercore",
+    "server",
+    "server/irmaserver"
+  ]
+  revision = "da76143f2dabbd4e4207b994706503585a404f92"
+  version = "v0.4.1"
+
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "839c75faf7f98a33d445d181f3018b5c3409a45e"
+  version = "v1.4.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/templexxx/cpufeat"
+  packages = ["."]
+  revision = "cef66df7f161dee20f4d650da7268d77eaaec82d"
+
+[[projects]]
+  name = "github.com/templexxx/xor"
+  packages = ["."]
+  revision = "0af8e873c554da75f37f2049cdffda804533d44c"
+  version = "0.1.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/timshannon/bolthold"
+  packages = ["."]
+  revision = "ccb01ed9dec4272145c1e7fa5c2970bc9ff63ce8"
+
+[[projects]]
+  name = "github.com/x-cray/logrus-prefixed-formatter"
+  packages = ["."]
+  revision = "bb2702d423886830dee131692131d35648c382e2"
+  version = "v0.5.2"
+
+[[projects]]
+  name = "go.etcd.io/bbolt"
+  packages = ["."]
+  revision = "a0458a2b35708eef59eb5f620ceb3cd1c01a824d"
+  version = "v1.3.3"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
-    "blowfish"
+    "blowfish",
+    "ed25519",
+    "ed25519/internal/edwards25519",
+    "sha3",
+    "ssh/terminal"
   ]
   revision = "2509b142fb2b797aa7587dad548f113b2c0f20ce"
 
@@ -108,6 +285,15 @@
     "internal"
   ]
   revision = "bb50c06baba3d0c76f9d125c0719093e315b5b44"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  revision = "b09406accb4736d857a32bf9444cd7edae2ffa79"
 
 [[projects]]
   branch = "master"
@@ -144,9 +330,15 @@
   revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
   version = "v1.0.0"
 
+[[projects]]
+  branch = "v1"
+  name = "gopkg.in/antage/eventsource.v1"
+  packages = ["."]
+  revision = "803f4c5af2259daa9225c72732b23e1e65ee794e"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "77f9fc5a6a948f4372b167fd66d2bcab0444a2a0139199f01d66d276600db1ca"
+  inputs-digest = "6750015f9dc4483532b787183eeb622dbd3744a17e6a8259fe884badd318061a"
   solver-name = "gps-cdcl"
   solver-version = 1

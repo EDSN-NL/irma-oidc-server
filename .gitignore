@@ -5,3 +5,6 @@
 *.exe
 cover.out
 vendor/
+fosite-example
+go.mod
+go.sum
