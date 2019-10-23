@@ -29,7 +29,7 @@ var store = &storage.MemoryStore{
 			RedirectURIs:  []string{"http://localhost:3847/callback"},
 			ResponseTypes: []string{"id_token", "code"}, // token not needed?
 			GrantTypes:    []string{"authorization_code"},
-			Scopes:        []string{"openid", "pbdf.nijmegen.personalData.fullname", "pbdf.pbdf.email.email"},
+			Scopes:        []string{"openid", "pbdf.gemeente.personalData.initials", "pbdf.gemeente.personalData.surname", "pbdf.pbdf.email.email"},
 		},
 	},
 	AuthorizeCodes:         map[string]storage.StoreAuthorizeCode{},
@@ -63,30 +63,14 @@ var oauth2 = compose.Compose(
 
 	// enabled handlers
 	compose.OAuth2AuthorizeExplicitFactory,
-	compose.OAuth2AuthorizeImplicitFactory,
-	compose.OAuth2ClientCredentialsGrantFactory,
-	compose.OAuth2RefreshTokenGrantFactory,
-	compose.OAuth2ResourceOwnerPasswordCredentialsFactory,
-
-	compose.OAuth2TokenRevocationFactory,
-	compose.OAuth2TokenIntrospectionFactory,
 
 	// be aware that open id connect factories need to be added after oauth2 factories to work properly.
 	compose.OpenIDConnectExplicitFactory,
-	compose.OpenIDConnectImplicitFactory,
-	compose.OpenIDConnectHybridFactory,
-	compose.OpenIDConnectRefreshFactory,
 )
-
-// A session is passed from the `/auth` to the `/token` endpoint. You probably want to store data like: "Who made the request",
-// "What organization does that person belong to" and so on.
-// For our use case, the session will meet the requirements imposed by JWT access tokens, HMAC access tokens and OpenID Connect
-// ID Tokens plus a custom field
 
 // newSession is a helper function for creating a new session. This may look like a lot of code but since we are
 // setting up multiple strategies it is a bit longer.
 // Usually, you could do:
-//
 //  session = new(fosite.DefaultSession)
 func newSession(subject string, disclosed map[string]interface{}) *openid.DefaultSession {
 	extra := make(map[string]interface{})
