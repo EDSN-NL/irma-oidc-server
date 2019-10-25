@@ -2,45 +2,40 @@ package main
 
 import (
 	"fmt"
-	"github.com/ory/fosite-example/irma"
-	"log"
-	"net/http"
-	"os"
-	"os/exec"
-
 	"github.com/ory/fosite-example/authorizationserver"
+	"github.com/ory/fosite-example/config"
+	"github.com/ory/fosite-example/irma"
 	"github.com/privacybydesign/irmago/server"
 	"github.com/privacybydesign/irmago/server/irmaserver"
+	"log"
+	"net/http"
+	"strconv"
 )
 
 func main() {
-	// ### IRMA ###
-	configuration := &server.Configuration{
-		// Replace with address that IRMA apps can reach
-		URL: "https://REPLACE_ME
-		EnableSSE: true,
-	}
+	config := config.GetConfig()
 
-	err := irmaserver.Initialize(configuration)
+	// ### IRMA ###
+	err := irmaserver.Initialize(&server.Configuration{
+		// Replace with address that IRMA apps can reach
+		URL:       config.IrmaURL,
+		EnableSSE: true,
+	})
 	if err != nil {
-		// ...
+		panic(fmt.Sprintf("Error starting Irma server: %v", err))
 	}
 	http.Handle("/irma/", irmaserver.HandlerFunc())
 
+	// ### register all OAuth handlers ###
+	authorizationserver.RegisterHandlers()
+
+	// ### Other Handlers ###
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/irma-login", irma.CreateSessionRequest)
 	http.HandleFunc("/get-irma-session", irma.GetIrmaSessionPtr)
 
-	// ### oauth2 server ###
-	authorizationserver.RegisterHandlers() // the authorization server (fosite)
+	fmt.Printf("Please open your webbrowser at http://localhost%v\n", config.Port)
 
-	port := "3846"
-	if os.Getenv("PORT") != "" {
-		port = os.Getenv("PORT")
-	}
-
-	fmt.Println("Please open your webbrowser at http://localhost:" + port)
-	_ = exec.Command("open", "http://localhost:"+port).Run()
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Port), nil))
 }
