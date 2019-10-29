@@ -13,13 +13,16 @@ import (
 )
 
 func main() {
-	config := config.GetConfig()
-	authorizationserver.SetOauth2Provider(config)
+	c := config.GetConfig()
+
+	fmt.Printf("Running with config: %v\n", c)
+
+	authorizationserver.SetOauth2Provider(*c)
 
 	// ### IRMA ###
 	err := irmaserver.Initialize(&server.Configuration{
 		// Replace with address that IRMA apps can reach
-		URL:       config.IrmaURL,
+		URL:       c.IrmaURL,
 		EnableSSE: true,
 	})
 	if err != nil {
@@ -36,7 +39,7 @@ func main() {
 	http.HandleFunc("/irma-login", irma.CreateSessionRequest)
 	http.HandleFunc("/get-irma-session", irma.GetIrmaSessionPtr)
 
-	fmt.Printf("Please open your webbrowser at http://localhost%v\n", config.Port)
+	fmt.Printf("Listening at http://localhost:%v\n", c.Port)
 
-	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(config.Port), nil))
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(c.Port), nil))
 }

@@ -1,0 +1,14 @@
+irmaUrl: http://localhost:3846/irma
+port: 3846
+oidcClients:
+  - id: my-client
+    secret: foobar
+    redirectUris:
+      - http://localhost:8080
+    scopes:
+      - openid
+      - pbdf.gemeente.personalData.initials
+      - pbdf.gemeente.personalData.surname
+      - pbdf.pbdf.email.email
+oidcIssuer: irma-oidc-server
+oauthHmacSecret: some-super-cool-secret-that-nobody-knows

@@ -1,7 +1,6 @@
 package authorizationserver
 
 import (
-	"crypto/rand"
 	"crypto/rsa"
 	"github.com/ory/fosite"
 	"github.com/ory/fosite-example/config"
@@ -30,14 +29,14 @@ func RegisterHandlers() {
 
 // Because we are using oauth2 and open connect id, we use this little helper to combine the two in one
 // variable.
-func getStrategy(fositeConfig *compose.Config, hmacSecret []byte) compose.CommonStrategy {
+func getStrategy(fositeConfig *compose.Config, hmacSecret []byte, rsaKey *rsa.PrivateKey) compose.CommonStrategy {
 	return compose.CommonStrategy{
 		// alternatively you could use:
 		//  OAuth2Strategy: compose.NewOAuth2JWTStrategy(mustRSAKey())
 		CoreStrategy: compose.NewOAuth2HMACStrategy(fositeConfig, hmacSecret),
 
 		// open id connect strategy
-		OpenIDConnectTokenStrategy: compose.NewOpenIDConnectStrategy(mustRSAKey()),
+		OpenIDConnectTokenStrategy: compose.NewOpenIDConnectStrategy(rsaKey),
 	}
 }
 
@@ -76,11 +75,11 @@ func getStoreFromConfig(clients []config.OidcClient) (*storage.MemoryStore, erro
 }
 
 func SetOauth2Provider(config config.IrmaOpenIDServerConfig) error {
-	issuer = config.Issuer
+	issuer = config.OidcIssuer
 	fositeConfig := new(compose.Config)
-	strategy := getStrategy(fositeConfig, []byte(config.HmacSecret))
+	strategy := getStrategy(fositeConfig, []byte(config.OauthHmacSecret), config.JwtPrivateKey)
 
-	store, err := getStoreFromConfig(config.Clients)
+	store, err := getStoreFromConfig(config.OidcClients)
 	if err != nil {
 		return err
 	}
@@ -120,12 +119,4 @@ func newSession(subject string, disclosed map[string]interface{}) *openid.Defaul
 		},
 		Headers: &jwt.Headers{},
 	}
-}
-
-func mustRSAKey() *rsa.PrivateKey {
-	key, err := rsa.GenerateKey(rand.Reader, 2048)
-	if err != nil {
-		panic(err)
-	}
-	return key
 }
