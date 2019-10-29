@@ -55,7 +55,6 @@ func CreateSessionRequest(w http.ResponseWriter, r *http.Request) {
 	request := getDisclosureRequestFromScopeParam(form.Get("scope"))
 
 	sessionPointer, _, err := irmaserver.StartSession(request, func(r *server.SessionResult) {
-		fmt.Println("IRMA Session done, result: ", server.ToJson(r))
 		store.Set("IrmaResult", server.ToJson(r))
 		store.Save()
 	})
