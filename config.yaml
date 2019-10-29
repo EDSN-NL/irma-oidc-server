@@ -1,4 +1,5 @@
 irmaUrl: http://localhost:3846/irma
+irmaProductionMode: false
 port: 3846
 oidcClients:
   - id: my-client

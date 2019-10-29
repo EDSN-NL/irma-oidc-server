@@ -21,6 +21,7 @@ type OidcClient struct {
 type IrmaOpenIDServerConfig struct {
 	// TODO: use irma.IrmaConfig here?
 	IrmaURL             string          `yaml:"irmaUrl,omitempty"`
+	IrmaProductionMode  bool            `yaml:"irmaProductionMode,omitempty"`
 	Port                int             `yaml:"port,omitempty"`
 	OidcClients         []OidcClient    `yaml:"oidcClients,omitempty"`
 	OidcIssuer          string          `yaml:"oidcIssuer,omitempty"`

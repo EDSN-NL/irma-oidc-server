@@ -22,8 +22,9 @@ func main() {
 	// ### IRMA ###
 	err := irmaserver.Initialize(&server.Configuration{
 		// Replace with address that IRMA apps can reach
-		URL:       c.IrmaURL,
-		EnableSSE: true,
+		URL:        c.IrmaURL,
+		EnableSSE:  true,
+		Production: c.IrmaProductionMode,
 	})
 	if err != nil {
 		panic(fmt.Sprintf("Error starting Irma server: %v", err))
