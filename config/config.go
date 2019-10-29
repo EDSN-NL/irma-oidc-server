@@ -27,7 +27,7 @@ type IrmaOpenIDServerConfig struct {
 	OidcIssuer          string          `yaml:"oidcIssuer,omitempty"`
 	OauthHmacSecret     string          `yaml:"oauthHmacSecret,omitempty"`
 	JwtPrivateKeyString string          `yaml:"jwtPrivateKey,omitempty"`
-	JwtPrivateKey       *rsa.PrivateKey `yaml:"jwtPrivateKey2,omitempty"`
+	JwtPrivateKey       *rsa.PrivateKey
 }
 
 func (c *OidcClient) String() string {
