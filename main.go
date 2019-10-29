@@ -14,6 +14,7 @@ import (
 
 func main() {
 	config := config.GetConfig()
+	authorizationserver.SetOauth2Provider(config)
 
 	// ### IRMA ###
 	err := irmaserver.Initialize(&server.Configuration{
