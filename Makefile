@@ -1,3 +1,2 @@
 ALL:
-	packr build .
-	go build -o irma-oidc-server .
+	packr build -o irma-oidc-server .

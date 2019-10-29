@@ -8,7 +8,7 @@ RUN go get -u github.com/gobuffalo/packr/packr
 
 COPY . .
 
-RUN packr build . && go build -o /tmp/irma-oidc-server .
+RUN packr build -o /tmp/irma-oidc-server .
 
 FROM alpine:3.10
 
