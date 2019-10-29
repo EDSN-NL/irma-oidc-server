@@ -13,3 +13,7 @@ oidcClients:
       - pbdf.pbdf.email.email
 oidcIssuer: irma-oidc-server
 oauthHmacSecret: some-super-cool-secret-that-nobody-knows
+#jwtPrivateKey: |-
+#  -----BEGIN RSA PRIVATE KEY-----
+#  FILL_IN..
+#  -----END RSA PRIVATE KEY-----
