@@ -5,14 +5,16 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-session/session"
+	"github.com/gobuffalo/packr"
 	"github.com/privacybydesign/irmago"
 	"github.com/privacybydesign/irmago/server"
 	"github.com/privacybydesign/irmago/server/irmaserver"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
+
+var box = packr.NewBox("./templates")
 
 func GetIrmaSessionPtr(w http.ResponseWriter, r *http.Request) {
 	store, err := session.Start(nil, w, r)
@@ -71,14 +73,12 @@ func CreateSessionRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 func outputHTML(w http.ResponseWriter, req *http.Request, filename string) {
-	file, err := os.Open(filename)
+	file, err := box.Find(filename)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	defer file.Close()
-	fi, _ := file.Stat()
-	http.ServeContent(w, req, file.Name(), fi.ModTime(), file)
+	w.Write(file)
 }
 
 func SessionResultToMap(sessionResult *server.SessionResult) map[string]interface{} {

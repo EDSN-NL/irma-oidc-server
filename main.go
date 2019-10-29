@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gobuffalo/packr"
 	"github.com/ory/fosite-example/authorizationserver"
 	"github.com/ory/fosite-example/config"
 	"github.com/ory/fosite-example/irma"
@@ -35,8 +36,9 @@ func main() {
 	authorizationserver.RegisterHandlers()
 
 	// ### Other Handlers ###
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	box := packr.NewBox("./irma/templates")
+	fs := http.FileServer(box)
+	http.Handle("/static/", fs)
 	http.HandleFunc("/irma-login", irma.CreateSessionRequest)
 	http.HandleFunc("/get-irma-session", irma.GetIrmaSessionPtr)
 

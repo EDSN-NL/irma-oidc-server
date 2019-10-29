@@ -8,3 +8,4 @@ vendor/
 fosite-example
 go.mod
 go.sum
+irma-oidc-server
