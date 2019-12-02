@@ -8,7 +8,15 @@ This project is based on [fosite-example](https://github.com/ory/fosite-example)
 
 This repository combines IRMA (using [irmago](https://github.com/privacybydesign/irmago)) with OpenID Connect to provide an OpenID Connect server that authenticates users using IRMA disclosure proofs.
 
-## Install and run
+## Run it
+
+Download a release from the releases page for your platform, and unpack and run it.
+
+Visit [http://localhost:3846/oauth2/auth?scope=openid+pbdf.pbdf.email.email&response_type=code&client_id=default-client&redirect_uri=http%3A%2F%2Flocalhost%3A8080&state=veryfoobar](http://localhost:3846/oauth2/auth?scope=openid+pbdf.pbdf.email.email&response_type=code&client_id=default-client&redirect_uri=http%3A%2F%2Flocalhost%3A8080&state=veryfoobar). You should see an IRMA QR code.
+
+See the configuration section on how to configure this for your client.
+
+## Compile and run
 
 With a recent version of Golang (i.e. 1.13+), dependencies are installed automatically. We only need the [packr](https://github.com/gobuffalo/packr) tool for building.
 
